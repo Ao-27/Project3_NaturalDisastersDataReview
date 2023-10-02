@@ -27,8 +27,6 @@ Disaster = Base.classes.Filtered_Clean_DataAnalysis_NaturalDisasters_1970_2021
 def welcome():
     return ("The working api route for data is '/api/v1.0/disasters/data'")
         
-
-app = Flask(__name__)
 @app.route("/api/v1.0/disasters/data")
 def disasters_data():
 
