@@ -1,4 +1,4 @@
-,Total Damages ('000 US$),Total Deaths,Dis No,Disaster Group,Disaster Subgroup,Disaster Type,Disaster Subtype,Disaster Subsubtype,Country,Region,Location,Continent,Start_Date_Complete_Y_N,Start Year,Start Month,Start Day,End_Date_Complete_Y_N,End Year,End Month,End Day,Start Date,End Date
+Index,Total Damages ('000 US$),Total Deaths,Dis No,Disaster Group,Disaster Subgroup,Disaster Type,Disaster Subtype,Disaster Subsubtype,Country,Region,Location,Continent,Start_Date_Complete_Y_N,Start Year,Start Month,Start Day,End_Date_Complete_Y_N,End Year,End Month,End Day,Start Date,End Date
 0,25000.0,36.0,1970-0013-ARG,Natural,Hydrological,Flood,,,Argentina,South America,Mendoza,Americas,Date_Complete,1970,01,04,Date_Complete,1970,01,04,1970-01-04,1970-01-04
 1,72475.0,13.0,1970-0109-AUS,Natural,Meteorological,Storm,Tropical cyclone,,Australia,Australia and New Zealand,Queensland,Oceania,Missing_Month_or_Day,1970,01,,Missing_Month_or_Day,1970,01,,1970-01-nan,1970-01-nan
 2,200.0,,1970-0044-BEN,Natural,Hydrological,Flood,,,Benin,Western Africa,Atacora region,Africa,Missing_Month_or_Day,1970,09,,Missing_Month_or_Day,1970,09,,1970-09-nan,1970-09-nan
