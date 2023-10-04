@@ -1,3 +1,4 @@
+# Import Dependencies
 import numpy as np
 
 import sqlalchemy
@@ -6,11 +7,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///Disasterdb.db")
+engine = create_engine("sqlite:///Disasters_db.db")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -19,61 +21,94 @@ Base.prepare(autoload_with=engine)
 Base.classes.keys()
 
 # Save reference to the table
-Disaster = Base.classes.Disasters
+# Disaster = Base.classes.Filtered_Clean_DataAnalysis_NaturalDisasters_1970_2021
+Disaster_year = Base.classes.disasters_per_year
+Final = Base.classes.final
 
+# Flask
 app = Flask(__name__)
+CORS(app)
 
+#################################################
+# Flask Routes
+#################################################
+
+# api route for main page
 @app.route("/")
 def welcome():
-    
-    return ("The working api route for data is '/api/v1.0/disasters/data'")
-        
-@app.route("/api/v1.0/disasters/data")
+    return(
+        f"Welcome to the Natural Disasters API!<br/>"
+        f"Available Routes:<br/>"
+        f"The api route for the entire data set is /api/v1.0/disasters/final_data</br>"
+        f"The api route for the disasters per year is /api/v1.0/disasters/data/per_year"
+    )
+
+# api route for entire data set
+@app.route("/api/v1.0/disasters/final_data")
 def disasters_data():
 
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    dis_data = session.query(Disaster.Total_Damages, Disaster.Total_deaths, Disaster.Dis_no, Disaster.Disaster_group, Disaster.Disaster_subgroup,
-                            Disaster.Disaster_type, Disaster.Disaster_subtype, Disaster.Disaster_subsubtype, Disaster.Country, Disaster.Region,
-                            Disaster.Location, Disaster.Continent, Disaster.Start_date_complete_Y_N, Disaster.Start_year, Disaster.Start_month,
-                            Disaster.Start_day, Disaster.End_date_complete_Y_N, Disaster.End_year, Disaster.End_month, Disaster.End_day,
-                            Disaster.Start_date, Disaster.End_date, Disaster.Start_to_end_date_duration_days, Disaster.Start_to_end_date_duration_months).all()
+    final_data = session.query(Final.country, Final.Total_deaths, Final.Total_Damages, Final.animal_acc, Final.drought, Final.earthquake, Final.epidemic,
+                              Final.ex_temp, Final.flood, Final.glacial, Final.impact, Final.insect, Final.lanslide, Final.mass_move, Final.storm,
+                              Final.volcano, Final.wildfire, Final.total_dis, Final.lat, Final.lon).all()
+
+    session.close()
+
+    # # Create a dictionary from the row data and append to a list of the entire disasters information
+    final_list = []
+    for country, Total_deaths, Total_Damages, animal_acc, drought, earthquake, epidemic, ex_temp, flood, glacial, impact, insect, lanslide, mass_move, storm, volcano, wildfire, total_dis, lat, lon in final_data:
+        final_dict = {}
+
+        final_dict["Country"] = country
+        final_dict["Total_deaths"] = Total_deaths
+        final_dict["Total_Damages"] = Total_Damages
+        final_dict["animal_acc"] = animal_acc
+        final_dict["drought"] = drought
+        final_dict["earthquake"] = earthquake
+        final_dict["epidemic"] = epidemic
+        final_dict["extreme_temp"] = ex_temp
+        final_dict["flood"] = flood
+        final_dict["glacial"] = glacial
+        final_dict["impact"] = impact
+        final_dict["insect"] = insect
+        final_dict["lanslide"] = lanslide
+        final_dict["mass_move"] = mass_move
+        final_dict["storm"] = storm
+        final_dict["volcano"] = volcano
+        final_dict["wildfire"] = wildfire
+        final_dict["total_dis"] = total_dis
+        final_dict["lat"] = lat
+        final_dict["lon"] = lon
+    
+        final_list.append(final_dict)
+
+    return jsonify(final_list)
+                                 
+
+# api route for disasters per year
+@app.route("/api/v1.0/disasters/data/per_year")
+def disasters_year_data():
+
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    disaster_year = session.query(Disaster_year.Year, Disaster_year.Total_Disasters).all()
     
     session.close()
 
-    # Create a dictionary from the row data and append to a list of the disaster information
-    disasters_list = []
-    for Total_Damages, Total_deaths, Dis_no, Disaster_group, Disaster_subgroup, Disaster_type, Disaster_subtype, Disaster_subsubtype, Country, Region, Location, Continent, Start_date_complete_Y_N, Start_year, Start_month, Start_day, End_date_complete_Y_N, End_year, End_month, End_day, Start_date, End_date, Start_to_end_date_duration_days, Start_to_end_date_duration_months in dis_data:
-        disasters_dict = {}
+    # Create a dictionary from the row data and append to a list of the total disaster information
+    disasters_year_list = []
+    for Year, Total_Disasters in disaster_year:
+        disasters_year_dict = {}
         
-        disasters_dict["Total_Damages"] = Total_Damages
-        disasters_dict["Total_deaths"] = Total_deaths
-        disasters_dict["Dis_no"] = Dis_no
-        disasters_dict["Disaster_group"] = Disaster_group
-        disasters_dict["Disaster_subgroup"] = Disaster_subgroup
-        disasters_dict["Disaster_type"] = Disaster_type
-        disasters_dict["Disaster_subtype"] = Disaster_subtype
-        disasters_dict["Disaster_subsubtype"] = Disaster_subsubtype
-        disasters_dict["Country"] = Country
-        disasters_dict["Region"] = Region
-        disasters_dict["Location"] = Location
-        disasters_dict["Continent"] = Continent
-        disasters_dict["Start_date_complete_Y_N"] = Start_date_complete_Y_N
-        disasters_dict["Start_year"] = Start_year
-        disasters_dict["Start_month"] = Start_month
-        disasters_dict["Start_day"] = Start_day
-        disasters_dict["End_date_complete_Y_N"] = End_date_complete_Y_N
-        disasters_dict["End_year"] = End_year
-        disasters_dict["End_month"] = End_month
-        disasters_dict["End_day"] = End_day
-        disasters_dict["Start_date"] = Start_date
-        disasters_dict["End_date"] = End_date
-        disasters_dict["Start_to_end_date_duration_days"] = Start_to_end_date_duration_days
-        disasters_dict["Start_to_end_date_duration_months"] = Start_to_end_date_duration_months
-       
-        disasters_list.append(disasters_dict)
-    return jsonify(disasters_list)
+        disasters_year_dict["Year"] = Year
+        disasters_year_dict["Total_Disasters"] = Total_Disasters
+    
+        disasters_year_list.append(disasters_year_dict)
+
+    return jsonify(disasters_year_list)
 
 
 if __name__ == '__main__':
