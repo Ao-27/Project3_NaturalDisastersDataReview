@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 #################################################
 # Database Setup
@@ -19,14 +20,18 @@ Base.prepare(autoload_with=engine)
 Base.classes.keys()
 
 app = Flask(__name__)
+CORS(app)
 
 # Save reference to the table
 Disaster = Base.classes.Filtered_Clean_DataAnalysis_NaturalDisasters_1970_2021
+Disaster_year = Base.classes.disasters_per_year
 
 @app.route("/")
 def welcome():
-    return ("The working api route for data is '/api/v1.0/disasters/data'")
-        
+    return ("The api route for full data is '/api/v1.0/disasters/data'.     "
+            "The api route for disasters per year is '/api/v1.0/disasters/data/per_year'")
+    
+
 @app.route("/api/v1.0/disasters/data")
 def disasters_data():
 
@@ -74,6 +79,28 @@ def disasters_data():
         disasters_list.append(disasters_dict)
 
     return jsonify(disasters_list)
+
+@app.route("/api/v1.0/disasters/data/per_year")
+def disasters_year_data():
+
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    disaster_year = session.query(Disaster_year.Year, Disaster_year.Total_Disasters).all()
+    
+    session.close()
+
+    # Create a dictionary from the row data and append to a list of the disaster information
+    disasters_year_list = []
+    for Year, Total_Disasters in disaster_year:
+        disasters_year_dict = {}
+        
+        disasters_year_dict["Year"] = Year
+        disasters_year_dict["Total_Disasters"] = Total_Disasters
+    
+        disasters_year_list.append(disasters_year_dict)
+
+    return jsonify(disasters_year_list)
 
 
 if __name__ == '__main__':
