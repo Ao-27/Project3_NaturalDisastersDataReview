@@ -1,0 +1,14 @@
+{"Countries":
+	{"Country1":
+		{"Col1 (flood_total)":
+		},
+		{"Col2 (eQuake_total)":
+		},
+		{"Col3 (Total Disasters_perEach_Country)
+		}
+	},
+	{"Country2":
+	}
+}
+
+Lat + Lon Merges ... 
