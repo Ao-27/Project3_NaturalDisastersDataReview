@@ -32,7 +32,7 @@ function markers(info){
         let coun = countries[i];
 
         let marker =  L.marker([coun.lat, coun.lon])
-        .bindPopup("<h3>" + coun.Country + "<h3><h3>Total Disasters: " + coun.total_dis)
+        .bindPopup("<h3>" + coun.Country + "<h3><h3>Total Disasters: " + coun.total_dis + "<h3><h3>Total Deaths: " + coun.Total_deaths + "<h3><h3>Total Damages: $" + coun.Total_Damages)
 
         countryMarkers.push(marker);
     }

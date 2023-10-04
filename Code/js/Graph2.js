@@ -1,79 +1,80 @@
-function init() {
+function init(data) {
+    let info = data
+    let countries = [];
+    for (let i = 0;  i < info.length; i++) {
+        let coun = info[i];
+        countries.push(coun.Country);
+    }
+    
+    for (i=0; i<countries.length; i++){
+        $('#selDataset').append($('<option>', {value: countries[i], text:countries[i]}));
+    }
+  
+  
+    let disasters = [];
+  
+    //disasters.push(info[0]['animal_acc']);
+    //disasters.push(info[0]['drought']);
+    //disasters.push(info[0]['earthquake']);
+    disasters.push(info[0]['epidemic']);
+    disasters.push(info[0]['extreme_temp']);
+    disasters.push(info[0]['flood']);
+    //disasters.push(info[0]['glacial']);
+    //disasters.push(info[0]['impact']);
+    //disasters.push(info[0]['insect']);
+    //disasters.push(info[0]['lanslide']);
+    disasters.push(info[0]['mass_move']);
+    disasters.push(info[0]['storm']);
+    //disasters.push(info[0]['volcano']);
+    disasters.push(info[0]['wildfire']);
+  
+    labels = ['animal_acc', 'drought', 'earthquake', 'epidemic', 'extreme_temp', 'flood', 'glacial',
+                'impact', 'insect', 'lanslide', 'mass_move', 'storm', 'volcano', 'wildfire'
+  ]
+  
+    console.log(disasters);
+  
+    
+    let stuff = [{
+        values: disasters,
+        labels: labels,
+        type: "pie"
+    }]
+    Plotly.newPlot("pie", stuff)
+  
+};
+
+function optionChanged() {
     d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
-        countries = [];
-        for (let i = 1;  i < data.length; i++) {
-            let coun = data[i];
-            countries.push(coun.Country);
-        }
-
-        for (let i=0; i < countries.length; i++) {
-            $('#selDataset').append($('<option>', {value: countries[i], text:countries[i]}));
-        }
-
-        disasters = [];
-        for (let i=0; i < 14; i++) {
-            disasters.push(Object.values(data[1][1+i])); //change for data
-        }
-
-        labels = [];
-        for (let i=0; i <14; i++) {
-            labels.push(Object.keys(data[1][1+i]));
-        }
-
-        let info = [{
-            values: disasters,
-            labels: labels,
-            type: "pie"
-        }]
-
-        let layout = {
-            title: 'Percentages of Disaster Types',
-            height: 500,
-            width: 500
-        }
-
-        Plotly.newPlot("pie", info, layout)
-
-    });
-}
-
-
-function dropDown() {
-    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
-        let dropdown = d3.select('selDataset');
+        let dropdown = d3.select('#selDataset');
         let dataset = dropdown.property('value');
-        countries = [];
-        for (let i = 1;  i < data.length; i++) {
-            countries.push(data[i].country);
-        }
-
-        let disasters = [];
-
-        for (let i = 0; i < countries.length; i++) {
-            selected = countries[i];
-            if (dataset == selected) {
-                for (let info = 0; i < 14; i++) {
-                    disasters.push(Object.values(data[1][1+i])); //change for data
+  
+        let info = data;
+        let selectedData = info.find(country => country.Country === dataset);
+  
+        // Check if a matching country is found
+        if (selectedData) {
+            let filteredDisasters = [];
+            let filteredLabels = [];
+  
+            // Filter out items with 0 data
+            for (let i = 0; i < labels.length; i++) {
+                if (selectedData[labels[i]] > 0) {
+                    filteredDisasters.push(selectedData[labels[i]]);
+                    filteredLabels.push(labels[i]);
                 }
             }
+  
+            let stuff = [{
+                values: filteredDisasters,
+                labels: filteredLabels,
+                type: "pie"
+            }];
+  
+            Plotly.newPlot("pie", stuff);
         }
-        let info = [{
-            values: disasters,
-            labels: labels,
-            type: "pie"
-        }];
-
-        let layout = {
-            title: 'Percentages of Disaster Types',
-            height: 500,
-            width: 500
-        };
-
-    Plotly.newPlot("pie", info, layout)
     });
-
-}
-
-init();
-
-d3.selectAll('#selDataset').on("dropDown(this.value)", dropDown);
+  }
+  
+  d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(init);
+  d3.selectAll("#selDataset").on("optionChanged(this.value)", optionChanged);
