@@ -37,6 +37,7 @@ CORS(app)
 @app.route("/")
 def welcome():
     return(
+
         f"Welcome to the Natural Disasters API!<br/>"
         f"Available Routes:<br/>"
         f"The api route for the entire data set is /api/v1.0/disasters/final_data</br>"
