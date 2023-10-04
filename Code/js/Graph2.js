@@ -1,8 +1,9 @@
 function init() {
-    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/data').then(function(data) {
+    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
         countries = [];
         for (let i = 1;  i < data.length; i++) {
-            countries.push(data[i].country);
+            let coun = data[i];
+            countries.push(coun.Country);
         }
 
         for (let i=0; i < countries.length; i++) {
@@ -38,7 +39,7 @@ function init() {
 
 
 function dropDown() {
-    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/data').then(function(data) {
+    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
         let dropdown = d3.select('selDataset');
         let dataset = dropdown.property('value');
         countries = [];

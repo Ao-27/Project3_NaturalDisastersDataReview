@@ -24,21 +24,21 @@ function makeMap(info) {
 }
 
 function markers(info){
-    let countries = info.data;
+    let countries = info
 
     let countryMarkers =[]
 
     for (let i = 0; i < countries.length; i++) {
-        let country = countries[i];
+        let coun = countries[i];
 
-        let marker =  L.marker([country.lat, country.lon])
-        .bindPopup("<h3>" + country.Country + "<h3><h3>Disasters: " + country.flood_total + ...)
+        let marker =  L.marker([coun.lat, coun.lon])
+        .bindPopup("<h3>" + coun.Country + "<h3><h3>Total Disasters: " + coun.total_dis)
 
         countryMarkers.push(marker);
     }
 
-    makeMap(L.layerGroup(bikeMarkers));
+    makeMap(L.layerGroup(countryMarkers));
 
 }
 
-d3.json("http://127.0.0.1:5000/api/v1.0/disasters/data").then(markers);
+d3.json("http://127.0.0.1:5000/api/v1.0/disasters/final_data").then(markers);

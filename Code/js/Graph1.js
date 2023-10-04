@@ -1,39 +1,29 @@
-// Initializes the page with a default plot
-function init() {
+function init(data) {
+    let info = data
+    let total_disasters = [];
+    for (let i = 0;  i < info.length; i++) {
+      let disa = info[i]
+      total_disasters.push(disa.Total_Disasters);
+    }
+    console.log(total_disasters);
+         
+    let years = [];
+      for (let i = 0;  i < info.length; i++) {
+        let year = info[i]
+        years.push(year.Year);
+    }
+    console.log(years);
+  
+    var layout = {
+      xaxis: {title:{text: 'Years'}},
+      yaxis: {title:{text: 'Number of Disasters'}}
+    }
+
     data = [{
-      x: [1, 2, 3, 4, 5],
-      y: [1, 2, 4, 8, 16] }];
-  
-    Plotly.newPlot("plot", data);
-  }
-  
-  // Call updatePlotly() when a change takes place to the DOM
-  d3.selectAll("#selDataset").on("change", updatePlotly);
-  
-  // This function is called when a dropdown menu item is selected
-  function updatePlotly() {
-    // Use D3 to select the dropdown menu
-    let dropdownMenu = d3.select("#selDataset");
-    // Assign the value of the dropdown menu option to a variable
-    let dataset = dropdownMenu.property("value");
-  
-    // Initialize x and y arrays
-    let x = [];
-    let y = [];
-  
-    if (dataset === 'dataset1') {
-      x = [1, 2, 3, 4, 5];
-      y = [1, 2, 4, 8, 16];
-    }
-  
-    else if (dataset === 'dataset2') {
-      x = [10, 20, 30, 40, 50];
-      y = [1, 10, 100, 1000, 10000];
-    }
-  
-    // Note the extra brackets around 'x' and 'y'
-    Plotly.restyle("plot", "x", [x]);
-    Plotly.restyle("plot", "y", [y]);
-  }
-  
-  init();
+      x: years,
+      y: total_disasters}];
+
+    Plotly.newPlot("plot", data, layout)
+};
+
+d3.json('http://127.0.0.1:5000/api/v1.0/disasters/data/per_year').then(init);

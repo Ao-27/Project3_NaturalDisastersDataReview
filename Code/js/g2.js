@@ -1,151 +1,71 @@
-function init()
-{
-    d3.json('../../Data/combined_data.json').then(function(data){
-        stateNames = [];
-        for (var i = 1; i < Object.keys(data).length+1; i++){
-            stateNames.push(data[i].State);
-        }
-        
-        for (i=0; i<stateNames.length; i++)
-        {
-            $('#selDataset').append($('<option>', {value: stateNames[i], text:stateNames[i]}));
-        }
+function init(data) {
+    let info = data
+    let countries = [];
+    for (let i = 0;  i < info.length; i++) {
+        let coun = info[i];
+        countries.push(coun.Country);
+    }
+    
+    for (i=0; i<countries.length; i++){
+        $('#selDataset').append($('<option>', {value: countries[i], text:countries[i]}));
+    }
 
-        evSales = [];
-        for (var i = 2016; i < 2022; i++){
-            evSales.push(data[1][`EV_${i}`]);
+
+    let disasters = [];
+
+    disasters.push(info[0]['animal_acc']);
+    disasters.push(info[0]['drought']);
+    disasters.push(info[0]['earthquake']);
+    disasters.push(info[0]['epidemic']);
+    disasters.push(info[0]['extreme_temp']);
+    disasters.push(info[0]['flood']);
+    disasters.push(info[0]['glacial']);
+    disasters.push(info[0]['impact']);
+    disasters.push(info[0]['insect']);
+    disasters.push(info[0]['lanslide']);
+    disasters.push(info[0]['mass_move']);
+    disasters.push(info[0]['storm']);
+    disasters.push(info[0]['volcano']);
+    disasters.push(info[0]['wildfire']);
+
+    labels = ['animal_acc', 'drought', 'earthquake', 'epidemic', 'extreme_temp', 'flood', 'glacial',
+                'impact', 'insect', 'lanslide', 'mass_move', 'storm', 'volcano', 'wildfire'
+]
+
+    console.log(disasters);
+
+    
+    let stuff = [{
+        values: disasters,
+        labels: labels,
+        type: "pie"
+    }]
+    Plotly.newPlot("pie", stuff)
+
+};
+
+function optionChanged() {
+    d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
+        let dropdown = d3.select('#selDataset');
+        let dataset = dropdown.property('value');
+
+        let info = data;
+        let selectedData = info.find(country => country.Country === dataset);
+
+        // Check if a matching country is found
+        if (selectedData) {
+            let disasters = labels.map(label => selectedData[label]);
+            
+            let stuff = [{
+                values: disasters,
+                labels: labels,
+                type: "pie"
+            }];
+
+            Plotly.newPlot("pie", stuff);
         }
-        
-        evShare =[];
-        for (var i = 2016; i < 2022; i++){
-            evShare.push(data[1][`EV Share_${i}`]);
-        }
-        
-        
-        trace1 = {
-                x:[2016, 2017, 2018, 2019, 2020, 2021],
-                y: evSales,
-                name: 'EV Sales',
-                type: 'scatter',
-                mode: 'lines',
-                yaxis: 'y1'
-        };
-
-        trace2 ={
-                x:[2016, 2017, 2018, 2019, 2020, 2021],
-                y: evShare,
-                name: '% of Sold EV Cars',
-                type: 'scatter',
-                mode: 'lines',
-                yaxis: 'y2'
-        };
-
-        
-        layout1 ={
-            title: 'EV Sales and Percentage of Sold EV in the USA, per Year',
-            xaxis: {
-                title: 'Year'
-            },
-            yaxis: {
-                title: 'Number of Sold EV Cars',
-                side: 'left',
-            },
-            yaxis2: {
-                title: 'Percentage of Sold EV in the Year (x100)',
-                side:'right',
-                overlaying: 'y1',
-                // range: [0, 3]
-            },
-            legend: {
-                x: 0,
-                y: 1000,
-                orientation: 'h'
-            }
-        };
-
-        
-        Plotly.newPlot('plot1', [trace1, trace2], layout1);
     });
 }
 
-    
-function optionChanged()
-{
-    d3.json('../../Data/combined_data.json').then(function(data) {
-
-    let dropdown = d3.select('#selDataset');
-    let dataset = dropdown.property('value');
-    stateNamess = [];
-    for (var i = 1; i < Object.keys(data).length+1; i++){
-        stateNamess.push(data[i].State);
-    }
- 
-    let evSalesOption = [];
-    let evShareOption = [];
-    
-
-    for (var i = 0; i < stateNamess.length; i++)
-    {
-        selectedState = stateNamess[i];
-
-        if (dataset == selectedState)
-        {
-            for (var j = 2016; j < 2022; j++){
-                evSalesOption.push(data[i+1][`EV_${j}`]);
-            }
-        
-            for (var j = 2016; j < 2022; j++){
-                evShareOption.push(data[i+1][`EV Share_${j}`]*100);
-            }
-        }
-    }
-    trace1 = {
-        x:[2016, 2017, 2018, 2019, 2020, 2021],
-        y: evSalesOption,
-        name: 'EV Sales',
-        type: 'scatter',
-        mode: 'lines',
-        yaxis: 'y1'
-    };
-
-    trace2 ={
-        x:[2016, 2017, 2018, 2019, 2020, 2021],
-        y: evShareOption,
-        name: '% of Sold EV Cars',
-        type: 'scatter',
-        mode: 'lines',
-        yaxis: 'y2'
-    };
-
-
-    layout1 ={
-        title: 'EV Sales and Percentage of Sold EV in the USA, per Year',
-        xaxis: {
-            title: 'Year'
-        },
-        yaxis: {
-            title: 'Number of Sold EV Cars',
-            side: 'left',
-        },
-        yaxis2: {
-            title: 'Percentage of Sold EV in the Year(x100)',
-            side:'right',
-            overlaying: 'y1',
-            // range: [0, 3]
-        },
-        legend: {
-            x: 0,
-            y: 1000,
-            orientation: 'h'
-        }
-    };
-
-
-    Plotly.newPlot('plot1', [trace1, trace2], layout1);
-    });
-}
-
-init();
+d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(init);
 d3.selectAll("#selDataset").on("optionChanged(this.value)", optionChanged);
-
-// could go per continent types natural disater types

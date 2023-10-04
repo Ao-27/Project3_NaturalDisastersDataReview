@@ -1,59 +1,80 @@
-function createMap(bikeStations) {
+function init(data) {
+  let info = data
+  let countries = [];
+  for (let i = 0;  i < info.length; i++) {
+      let coun = info[i];
+      countries.push(coun.Country);
+  }
+  
+  for (i=0; i<countries.length; i++){
+      $('#selDataset').append($('<option>', {value: countries[i], text:countries[i]}));
+  }
 
-    // Create the tile layer that will be the background of our map.
-    let streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
+
+  let disasters = [];
+
+  //disasters.push(info[0]['animal_acc']);
+  //disasters.push(info[0]['drought']);
+  //disasters.push(info[0]['earthquake']);
+  disasters.push(info[0]['epidemic']);
+  disasters.push(info[0]['extreme_temp']);
+  disasters.push(info[0]['flood']);
+  //disasters.push(info[0]['glacial']);
+  //disasters.push(info[0]['impact']);
+  //disasters.push(info[0]['insect']);
+  //disasters.push(info[0]['lanslide']);
+  disasters.push(info[0]['mass_move']);
+  disasters.push(info[0]['storm']);
+  //disasters.push(info[0]['volcano']);
+  disasters.push(info[0]['wildfire']);
+
+  labels = ['animal_acc', 'drought', 'earthquake', 'epidemic', 'extreme_temp', 'flood', 'glacial',
+              'impact', 'insect', 'lanslide', 'mass_move', 'storm', 'volcano', 'wildfire'
+]
+
+  console.log(disasters);
+
   
-  
-    // Create a baseMaps object to hold the streetmap layer.
-    let baseMaps = {
-      "Street Map": streetmap
-    };
-  
-    // Create an overlayMaps object to hold the bikeStations layer.
-    let overlayMaps = {
-      "Bike Stations": bikeStations
-    };
-  
-    // Create the map object with options.
-    let map = L.map("map-id", {
-      center: [40.73, -74.0059],
-      zoom: 12,
-      layers: [streetmap, bikeStations]
-    });
-  
-    // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
-    L.control.layers(baseMaps, overlayMaps, {
-      collapsed: false
-    }).addTo(map);
-  }
-  
-  function createMarkers(response) {
-  
-    // Pull the "stations" property from response.data.
-    let stations = response.data.stations;
-  
-    // Initialize an array to hold bike markers.
-    let bikeMarkers = [];
-  
-    // Loop through the stations array.
-    for (let index = 0; index < stations.length; index++) {
-      let station = stations[index];
-  
-      // For each station, create a marker, and bind a popup with the station's name.
-      let bikeMarker = L.marker([station.lat, station.lon])
-        .bindPopup("<h3>" + station.name + "<h3><h3>Capacity: " + station.capacity + "</h3>");
-  
-      // Add the marker to the bikeMarkers array.
-      bikeMarkers.push(bikeMarker);
-    }
-  
-    // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
-    createMap(L.layerGroup(bikeMarkers));
-  }
-  
-  
-  // Perform an API call to the Citi Bike API to get the station information. Call createMarkers when it completes.
-  d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json").then(createMarkers);
-  
+  let stuff = [{
+      values: disasters,
+      labels: labels,
+      type: "pie"
+  }]
+  Plotly.newPlot("pie", stuff)
+
+};
+
+function optionChanged() {
+  d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(function(data) {
+      let dropdown = d3.select('#selDataset');
+      let dataset = dropdown.property('value');
+
+      let info = data;
+      let selectedData = info.find(country => country.Country === dataset);
+
+      // Check if a matching country is found
+      if (selectedData) {
+          let filteredDisasters = [];
+          let filteredLabels = [];
+
+          // Filter out items with 0 data
+          for (let i = 0; i < labels.length; i++) {
+              if (selectedData[labels[i]] > 0) {
+                  filteredDisasters.push(selectedData[labels[i]]);
+                  filteredLabels.push(labels[i]);
+              }
+          }
+
+          let stuff = [{
+              values: filteredDisasters,
+              labels: filteredLabels,
+              type: "pie"
+          }];
+
+          Plotly.newPlot("pie", stuff);
+      }
+  });
+}
+
+d3.json('http://127.0.0.1:5000/api/v1.0/disasters/final_data').then(init);
+d3.selectAll("#selDataset").on("optionChanged(this.value)", optionChanged);
