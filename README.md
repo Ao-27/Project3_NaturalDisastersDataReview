@@ -6,7 +6,7 @@
 ### Introduction to Project:
 
 
-### Getting Started - Data Collection:
+## Getting Started - Data Collection:
 The main dataset was sourced from Kaggle.com through this weblink [ALL NATURAL DISASTERS 1900-2021 / EOSDIS](https://www.kaggle.com/datasets/brsdincer/all-natural-disasters-19002021-eosdis "ALL NATURAL DISASTERS 1900-2021 / EOSDIS") as a .csv file.
 
 By using Python to access the data we found the following columns to be extremely useful for our data visualizations.
