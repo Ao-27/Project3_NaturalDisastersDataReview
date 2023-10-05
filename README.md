@@ -13,7 +13,7 @@ Within it we found the following columns to be extremely useful for our data vis
 * 'Dis No' as Unique ID
 * 
 
-The Dataset was joined to Latitudinal and Logitudinal data through this weblink [World Coordinates](https://www.kaggle.com/datasets/parulpandey/world-coordinates "World Coordinates")
+The Dataset was joined to Latitudinal and Logitudinal data through this weblink [World Coordinates](https://www.kaggle.com/datasets/parulpandey/world-coordinates "World Coordinates").
 
 
 
