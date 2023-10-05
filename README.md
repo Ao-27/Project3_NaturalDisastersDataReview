@@ -30,10 +30,10 @@ In order to align the data for the HTML visual outputs, the main dataset was joi
 **1. Mapping Out Natural Disasters by Country:**
    * Format Presented: Leaflet Map with Interactive Location Pointers.
    * Content: Each Country displays their: Total Disasters, Total Deaths and Total Damages amounts from the API.
-**3. Total Natural Disasters Per Year:**
+**2. Total Natural Disasters Per Year:**
    * Format Presented: Line Graph with Interactive Total Numbers.
    * Content: Each Year displays their: Total Disasters amount from the API.
-**5. Natural Disaster Types by Country:**
+**3. Natural Disaster Types by Country:**
    * Format Presented: Pie Chart with Interactive Country Selection Dropdown List.
    * Content: Each Country Selected displays their: Percentage of Total Disaster Types from the API.
 
