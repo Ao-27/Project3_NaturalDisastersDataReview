@@ -1,12 +1,12 @@
 # Project3_NaturalDisastersDataReview
 
-###How to Navigate this Repository:
+### How to Navigate this Repository:
 
 
-###Introduction to Project:
+### Introduction to Project:
 
 
-###Getting Started - Data Collection:
+### Getting Started - Data Collection:
 The main dataset was sourced from Kaggle.com through this weblink [ALL NATURAL DISASTERS 1900-2021 / EOSDIS](https://www.kaggle.com/datasets/brsdincer/all-natural-disasters-19002021-eosdis "ALL NATURAL DISASTERS 1900-2021 / EOSDIS") as a .csv file.
 
 By using Python to access the data we found the following columns to be extremely useful for our data visualizations.
@@ -22,11 +22,11 @@ By using Python to access the data we found the following columns to be extremel
 
 In order to align the data for the HTML visual outputs, the main dataset was joined to Latitudinal and Logitudinal data through python by loading data from this weblink [World Coordinates](https://www.kaggle.com/datasets/parulpandey/world-coordinates "World Coordinates") as a .csv file.
 
-###Data Visualizations:
+### Data Visualizations:
 3 visualizations were produced from the final combined dataset.
 *
 
-##Conclusion:
+## Conclusion:
 
 
-##Authors:
+## Authors:
