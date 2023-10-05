@@ -29,16 +29,16 @@ In order to align the data for the HTML visual outputs, the main dataset was joi
 **The visualizations are titled:**
 
 **1. Mapping Out Natural Disasters by Country:**
-   * Format Presented: Leaflet Map with Interactive Location Pointers.
-   * Content: Each Country displays their: Total Disasters, Total Deaths and Total Damages amounts from the API.
+   * __Format Presented:__ Leaflet Map with Interactive Location Pointers.
+   * __Content:__ Each Country displays their: Total Disasters, Total Deaths and Total Damages amounts from the API.
 
 **2. Total Natural Disasters Per Year:**
-   * Format Presented: Line Graph with Interactive Total Numbers.
-   * Content: Each Year displays their: Total Disasters amount from the API.
+   * __Format Presented:__ Line Graph with Interactive Total Numbers.
+   * __Content:__ Each Year displays their: Total Disasters amount from the API.
 
 **3. Natural Disaster Types by Country:**
-   * Format Presented: Pie Chart with Interactive Country Selection Dropdown List.
-   * Content: Each Country Selected displays their: Percentage of Total Disaster Types from the API.
+   * __Format Presented:__ Pie Chart with Interactive Country Selection Dropdown List.
+   * __Content:__ Each Country Selected displays their: Percentage of Total Disaster Types from the API.
 
 ## Conclusion:
 The Team was able to notice that we had some lacking datapoints to execute the required depth of analysis to analyze Climate Change impacts. For example, Annual Temperature Averages by Year is not within the main dataset or the location dataset.
