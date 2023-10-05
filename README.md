@@ -45,4 +45,3 @@ Leveraging our location dataset to join with the Country column of the main data
 2. Standardized data collection by each country would greatly increase the depth of our analysis,
 3. The impact of what data is missing from each Natural Disaster varies over time.
 
-## Authors:
