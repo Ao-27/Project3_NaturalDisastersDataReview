@@ -24,7 +24,9 @@ In order to align the data for the HTML visual outputs, the main dataset was joi
 
 ### Data Visualizations:
 3 visualizations were produced from the final combined dataset.
-*
+1.
+2.
+3.
 
 ## Conclusion:
 
