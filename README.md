@@ -23,10 +23,18 @@ By using Python to access the data we found the following columns to be extremel
 In order to align the data for the HTML visual outputs, the main dataset was joined to Latitudinal and Logitudinal data through python by loading data from this weblink [World Coordinates](https://www.kaggle.com/datasets/parulpandey/world-coordinates "World Coordinates") as a .csv file.
 
 ### Data Visualizations:
-3 visualizations were produced from the final combined dataset.
-1.
-2.
-3.
+3 visualizations were produced from the final combined dataset accessed through APIs coordinated via Flask in the app.py and interacted within a browser using the index.html file.
+
+The visualizations are titled:
+1. Mapping Out Natural Disasters by Country:
+    i. Format Presented: Leaflet Map with Interactive Location Pointers.
+    ii. Content: Each Country displays their: Total Disasters, Total Deaths and Total Damages amounts from the API.
+3. Total Natural Disasters Per Year:
+    i. Format Presented: Line Graph with Interactive Total Numbers.
+    ii. Content: Each Year displays their: Total Disasters amount from the API.
+5. Natural Disaster Types by Country:
+    i. Format Presented: Pie Chart with Interactive Country Selection Dropdown List.
+    ii. Content: Each Country Selected displays their: Percentage of Total Disaster Types from the API.
 
 ## Conclusion:
 
